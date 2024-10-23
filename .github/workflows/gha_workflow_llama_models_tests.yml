@@ -65,7 +65,7 @@ jobs:
     defaults:
       run:
         shell: bash # default shell to run all steps for a given job.
-    runs-on: ${{ inputs.runner != '' && inputs.runner || 'llama-models-fork-gha-runner-cpu' }}
+    runs-on: ${{ inputs.runner != '' && inputs.runner || 'llama-models-fork-gha-runner-gpu' }}
     if: always()
     steps:
 
