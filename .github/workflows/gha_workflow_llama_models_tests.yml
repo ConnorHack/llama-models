@@ -13,7 +13,7 @@ on:
       runner:
         description: 'GHA Runner Scale Set label to run workflow on.'
         required: true
-        default: "llama-models-fork-gha-runner-gpu"
+        default: "llama-models-gha-runner-gpu"
 
       branch:
         description: "Branch to checkout"
@@ -47,7 +47,7 @@ on:
 
       api_key:
         description: 'Provider API key'
-        required: true
+        required: false
         default: "---"
 
 env: 
@@ -55,15 +55,17 @@ env:
   MODELS_PATH: "/data/llama3.2"
   VISION_MODEL_CHECKPOINT_DIR: "/data/llama3.2/${{ inputs.model_vision }}"
   TEXT_MODEL_CHECKPOINT_DIR: "/data/llama3.2/${{ inputs.model_text }}"
-  API_KEY: "${{ inputs.api_key }}"
+  API_KEY: "${{ inputs.api_key || '' }}"
 
 jobs:
   execute_workflow:
     name: Execute workload on Self-Hosted CPU k8s runner
+    permissions:
+      pull-requests: write
     defaults:
       run:
         shell: bash # default shell to run all steps for a given job.
-    runs-on: ${{ inputs.runner != '' && inputs.runner || 'llama-models-fork-gha-runner-cpu' }}
+    runs-on: ${{ inputs.runner != '' && inputs.runner || 'llama-models-gha-runner-cpu' }}
     if: always()
     steps:
 
