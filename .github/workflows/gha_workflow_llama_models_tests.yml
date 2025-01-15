@@ -60,6 +60,7 @@ env:
   VISION_MODEL_CHECKPOINT_DIR: "/data/llama/${{ inputs.model_vision }}"
   TEXT_MODEL_CHECKPOINT_DIR: "/data/llama/${{ inputs.model_text }}"
   API_KEY: "${{ inputs.api_key || '' }}"
+  RUNNER_DEFAULT: ${{ github.repository_owner == 'meta-llama' && 'llama-models-gha-runner-cpu' || 'llama-models-fork-gha-runner-cpu'}}
 
 jobs:
   execute_workflow:
@@ -69,7 +70,7 @@ jobs:
     defaults:
       run:
         shell: bash # default shell to run all steps for a given job.
-    runs-on: ${{ inputs.runner != '' && inputs.runner || 'llama-models-gha-runner-cpu' }}
+    runs-on: ${{ inputs.runner != '' && inputs.runner || env.RUNNER_DEFAULT }}
     if: always()
     steps:
 
